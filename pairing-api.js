@@ -212,6 +212,15 @@ app.get('/api/code/:phoneNumber', (req, res) => {
     res.json(status)
 })
 
+// Nombre de sessions WhatsApp actuellement connectées (affiché sur le site)
+app.get('/api/sessions/count', (req, res) => {
+    let connected = 0
+    for (const status of pairingStatus.values()) {
+        if (status.status === 'connected') connected++
+    }
+    res.json({ count: connected })
+})
+
 // Déconnecte une session WhatsApp active depuis le site
 app.delete('/api/session/:phoneNumber', async (req, res) => {
     const cleanNumber = req.params.phoneNumber.replace(/[^0-9]/g, '')
