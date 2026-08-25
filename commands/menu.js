@@ -13,11 +13,11 @@ async function menuCommand(sock, chatId, message, args) {
 ╔━━━⊷≫ 𝙸𝙽𝙵𝙾 𝙱𝙾𝚃 ≪⊷━━━╗
 ║╭────────────
 ║│ 𝚄𝚂𝙴𝚁  : ${userName}
-║│ 𝙱𝙾𝚃 𝙽𝙰𝙼𝙴 : 𝙲𝙷𝙰𝚃 𝙽𝙾𝙸𝚁-𝙼𝙳
-║│ 𝚂𝚃𝙰𝚃𝚄𝚂 : Online 🟢
+║│ 𝙱𝙾𝚃 𝙽𝙰𝙼𝙴 : 𝐂𝐡𝐚𝐭 𝐍𝐨𝐢𝐫-𝐌𝐃
+║│ 𝚂𝚃𝙰𝚃𝚄𝚂 : 𝐎𝐧𝐥𝐢𝐧𝐞 🟢
 ║│ 𝙿𝚁𝙴𝙵𝙸𝚇 : "."
 ║│ 𝙼𝙾𝙳𝙴 : ${botMode}
-║│ 𝙾𝚆𝙽𝙴𝚁 : DEV MICHAEL SCOFIELD
+║│ 𝙾𝚆𝙽𝙴𝚁 : 𝐃𝐄𝐕 𝐌𝐈𝐂𝐇𝐀𝐄𝐋 𝐒𝐂𝐎𝐅𝐈𝐄𝐋𝐃
 ║╰────────────
 ╚━━━━━━━━━━━━━━━━━━╝
 
@@ -151,7 +151,7 @@ async function menuCommand(sock, chatId, message, args) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: "120363402057857053@newsletter",
+                            newsletterJid: "120363425443983039@newsletter",
                             newsletterName: "🐾CHAT NOIR-MD🐾",
                             serverMessageId: -1
                         }
@@ -166,7 +166,7 @@ async function menuCommand(sock, chatId, message, args) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: "120363402057857053@newsletter",
+                        newsletterJid: "120363425443983039@newsletter",
                         newsletterName: "🐾CHAT NOIR-MD🐾",
                         serverMessageId: -1
                     }
