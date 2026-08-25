@@ -1,0 +1,16 @@
+{
+  "name": "aura-primme-md",
+  "version": "1.0.0",
+  "description": "Bot WhatsApp (Baileys) + bot Telegram + site de pairing web",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pino": "^9.3.2"
+  }
+}
