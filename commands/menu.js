@@ -2,191 +2,224 @@ const settings = require('../settings');
 const fs = require('fs');
 const path = require('path');
 
-async function menuCommand(sock, chatId, message, args) {
+async function menuCommand(sock, chatId, message) {
+
     const userName = message.pushName || "Utilisateur";
 
-    // ── MODE ──
-    const botMode = settings.self === true ? 'PRIVATE 🔒' : 'PUBLIC 🌍';
-
-    // ===== MENU STYLE =====
-    const menuMessage = `
-╔━━━⊷≫ 𝙸𝙽𝙵𝙾 𝙱𝙾𝚃 ≪⊷━━━╗
-║╭────────────
-║│ 𝚄𝚂𝙴𝚁  : ${userName}
-║│ 𝙱𝙾𝚃 𝙽𝙰𝙼𝙴 : 𝐂𝐡𝐚𝐭 𝐍𝐨𝐢𝐫-𝐌𝐃
-║│ 𝚂𝚃𝙰𝚃𝚄𝚂 : 𝐎𝐧𝐥𝐢𝐧𝐞 🟢
-║│ 𝙿𝚁𝙴𝙵𝙸𝚇 : "."
-║│ 𝙼𝙾𝙳𝙴 : ${botMode}
-║│ 𝙾𝚆𝙽𝙴𝚁 : 𝐃𝐄𝐕 𝐌𝐈𝐂𝐇𝐀𝐄𝐋 𝐒𝐂𝐎𝐅𝐈𝐄𝐋𝐃
-║╰────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝚄𝚂𝙴𝚁
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙿𝙸𝙽𝙶
-║┃• 𝙰𝙻𝙸𝚅𝙴
-║┃• 𝙾𝚆𝙽𝙴𝚁
-║┃• 𝙰𝙳𝙼𝙸𝙽𝚂
-║┃• 𝙶𝚁𝙾𝚄𝙿𝙸𝙽𝙵𝙾
-║┃• 𝙹𝙸𝙳
-║┃• 𝚄𝚁𝙻
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙼𝙴𝙳𝙸𝙰 / 𝚃𝙾𝙾𝙻𝚂
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝚂𝚃𝙸𝙲𝙺𝙴𝚁
-║┃• 𝚃𝙰𝙺𝙴
-║┃• 𝚅𝚅
-║┃• 𝙱𝙻𝚄𝚁
-║┃• 𝚁𝙴𝙼𝙸𝙽𝙸
-║┃• 𝙲𝚁𝙾𝙿
-║┃• 𝙴𝙼𝙾𝙹𝙸𝙼𝙸𝚇
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳𝙴𝚁𝚂
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙵𝙰𝙲𝙴𝙱𝙾𝙾𝙺 <𝚄𝚁𝙻>
-║┃• 𝙸𝙽𝚂𝚃𝙰 <𝚄𝚁𝙻>
-║┃• 𝚃𝙸𝙺𝚃𝙾𝙺 <𝚄𝚁𝙻>
-║┃• 𝚂𝙾𝙽𝙶 <𝙽𝙰𝙼𝙴>
-║┃• 𝙿𝙻𝙰𝚈 <𝙽𝙰𝙼𝙴>
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙶𝚁𝙾𝚄𝙿
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝚆𝙴𝙻𝙲𝙾𝙼𝙴 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙶𝙾𝙾𝙳𝙱𝚈𝙴 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙰𝙽𝚃𝙸-𝙵𝙾𝚁𝚆𝙰𝚁𝙳 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙼𝚄𝚃𝙴 @𝚄𝚂𝙴𝚁
-║┃• 𝚄𝙽𝙼𝚄𝚃𝙴 @𝚄𝚂𝙴𝚁
-║┃• 𝚃𝙰𝙶𝙰𝙻𝙻
-║┃• 𝙷𝙸𝙳𝙴𝚃𝙰𝙶
-║┃• 𝙺𝙸𝙲𝙺
-║┃• 𝙿𝚁𝙾𝙼𝙾𝚃𝙴
-║┃• 𝙳𝙴𝙼𝙾𝚃𝙴
-║┃• 𝙻𝙸𝙽𝙺
-║┃• 𝚁𝙴𝚅𝙾𝙺𝙴
-║┃• 𝙲𝙻𝙴𝙰𝚁
-║┃• 𝙲𝙷𝙰𝚃𝙱𝙾𝚃
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙰𝙳𝚅𝙰𝙽𝙲𝙴𝙳
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙰𝚄𝚃𝙾𝚁𝙴𝙰𝙳 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙰𝚄𝚃𝙾𝚁𝙴𝙰𝙲𝚃 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙰𝚄𝚃𝙾𝚂𝚃𝙰𝚃𝚄𝚂 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙰𝚄𝚃𝙾𝚃𝚈𝙿𝙸𝙽𝙶 𝙾𝙽/𝙾𝙵𝙵
-║┃• 𝙼𝙾𝙳𝙴
-║┃• 𝚂𝚄𝙳𝙾 𝙰𝙳𝙳
-║┃• 𝙿𝙼𝙱𝙻𝙾𝙲𝙺𝙴𝚁
-║┃• 𝚄𝙿𝙳𝙰𝚃𝙴
-║┃• 𝚂𝙴𝚃𝙿𝙿
-║┃• 𝙲𝚁𝙴𝙰𝚃𝙴𝙶𝚁𝙾𝚄𝙿
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙵𝚄𝙽
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙲𝙾𝙼𝙿𝙻𝙸𝙼𝙴𝙽𝚃
-║┃• 𝙸𝙽𝚂𝚄𝙻𝚃
-║┃• 𝙵𝙻𝙸𝚁𝚃
-║┃• 𝚃𝚁𝚄𝚃𝙷
-║┃• 𝙳𝙰𝚁𝙴
-║┃• 𝚂𝙷𝙸𝙿 @𝚄𝚂𝙴𝚁
-║┃• 𝚁𝙰𝚃𝙴 @𝚄𝚂𝙴𝚁
-║┃• 𝙲𝙰𝙻𝙲 10+2
-║┃• 𝙴𝙼𝙾𝙹𝙸𝙼𝙸𝚇 1+2
-║┃• 𝙲𝙷𝙰𝚁𝙰𝙲𝚃𝙴𝚁
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝙰𝙸
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙶𝙿𝚃
-║┃• 𝙶𝙴𝙼𝙸𝙽𝙸
-║┃• 𝙸𝙼𝙰𝙶𝙸𝙽𝙴
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-║➠ 𝚃𝙴𝚇𝚃𝙼𝙰𝙺𝙴𝚁
-╔━━━━━━━━━━━━━━━━━━╗
-║╭───────────────
-║┃• 𝙼𝙴𝚃𝙰𝙻𝙻𝙸𝙲
-║┃• 𝙽𝙴𝙾𝙽
-║┃• 𝙼𝙰𝚃𝚁𝙸𝚇
-║┃• 𝙶𝙻𝙸𝚃𝙲𝙷
-║┃• 𝙵𝙸𝚁𝙴
-║┃• 𝙿𝚄𝚁𝙿𝙻𝙴
-║┃• 𝙷𝙰𝙲𝙺𝙴𝚁
-║╰───────────────
-╚━━━━━━━━━━━━━━━━━━╝
-
-╔━━━⊷≫ 𝙲𝙷𝙰𝚃 𝙽𝙾𝙸𝚁-𝙼𝙳 ≪⊷━━━╗
-║  © 𝙳𝙴𝚅 𝙼𝙸𝙲𝙷𝙰𝙴𝙻 𝚂𝙲𝙾𝙵𝙸𝙴𝙻𝙳
-╚━━━━━━━━━━━━━━━━━━━━━━━━━━━╝`;
-
-    // ── ENVOI ──
+    // Animation typing
     try {
+        await sock.sendPresenceUpdate('composing', chatId);
+        await sock.sendMessage(chatId, { text: "⏳ *∘̥⃟☠️𓊈𝐄𝐌𝐏𝐈𝐑𝐄『AKATSUKI』𓊉☠️ ∘̥⃟ THE BEST🏆 Loading menu…*" });
+        await new Promise(resolve => setTimeout(resolve, 1800));
+        await sock.sendPresenceUpdate('paused', chatId);
+    } catch {}
+// Détection automatique du mode (PUBLIC / PRIVÉ)
+let botMode = settings.self === true ? 'PRIVÉ' : 'PUBLIC';
+    // Message du menu
+    const helpMessage = `
+ ▛▀▜ ✦ 🩸AKATSUKI–MD•V3🩸 ✦ ▙▀▟
+╔──────────────────╗
+│ • BOT ID   : AKATSUKI MD  
+│ • VERSION  : 3.0.1  
+│ • DEV      : SHADOW TECH™  
+│ • USER     : ${userName}  
+│ • STATUS   : ACTIVE  
+│ • MODE     : ${botMode}  
+╚──────────────────╝
+
+彡━━ ࿇ SYSTEM AKATSUKI ━彡
+│ • .menu
+│ • .ping
+│ • .alive
+│ • .tts <texte>
+│ • .del sudo
+│ • .owner
+│ • .admins
+│ • .weather <ville>
+│ • .lyrics <chanson>
+│ • .attp <texte>
+│ • .groupinfo
+│ • .vv
+│ • .trt <texte> <lang>
+│ • .ss <lien>
+│ • .jid 
+│ • .url
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━ 🛡️ ADMIN CONTROL ━彡
+│ • .kick
+│ • .kickall
+│ • .promote
+│ • .demote
+│ • .mute <min>
+│ • .unmute
+│ • .delete
+│ • .warn
+│ • .ban @user
+│ • .warnings
+│ • .antilink
+│ • .antibadword
+│ • .clear
+│ • .tag / .tagall
+│ • .tagnotadmin
+│ • .hidetag <msg>
+│ • .chatbot
+│ • .resetlink
+│ • .antitag on/off
+│ • .welcome on/off
+│ • .goodbye on/off
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━ 👑 OWNER MENU ━━━彡
+│ • .mode
+│ • .autostatus
+│ • .autoread
+│ • .autotyping
+│ • .autoreact
+│ • .areact
+│ • .del sudo 
+│ • .pmblocker
+│ • .sudo add 
+│ • .update 
+│ • .setpp
+│ • .setmention 
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━ 🖼️ IMAGE & STICKER ━彡
+│ • .blur
+│ • .simage
+│ • .sticker
+│ • .remini
+│ • .crop
+│ • .take <pack>
+│ • .emojimix 
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━━ ♟️GAME MENU ━━━彡
+│ • .tictactoe
+│ • .hangman
+│ • .guess <lettre>
+│ • .trivia
+│ • .answer
+│ • .truth 
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━━━ 🔮 AI MENU   ━━━彡
+│ • .gpt
+│ • .gemini
+│ • .imagine
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━━ 🎎 FUN MENU ━━━彡
+│ • .compliment
+│ • .insult
+│ • .flirt
+│ • .shayari
+│ • .roseday
+│ • .character
+│ • .wasted
+│ • .ship
+│ • .simp
+│ • .stupid
+│ • .triggered
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━━━ 📝 TEXTMAKER ━━彡
+│ • .metallic
+│ • .ice
+│ • .snow
+│ • .impressive
+│ • .matrix
+│ • .light
+│ • .neon
+│ • .devil
+│ • .purple
+│ • .thunder
+│ • .leaves
+│ • .1917
+│ • .arena
+│ • .hacker
+│ • .sand
+│ • .blackpink
+│ • .glitch
+│ • .fire
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━ ⬇️DOWNLOAD MENU ━彡
+│ • .play
+│ • .song
+│ • .facebook
+│ • .ytmp4
+┗━━━━━━━━━━━━━━━━━━━
+
+彡━ INSU &COMPL MENU ━彡
+│ • .stupid
+│ • .comrade
+│ • .gay
+┗━━━━━━━━━━━━━━━━━━━
+│   ࿇ 𝚃𝙷𝙴 AKATSUKI 𝙲𝙻𝙰𝙽 ࿇
+│      ©  BY SHADOW TECH™  
+┗━━━━━━━━━━━━━━━━━━┛
+`;
+
+    try {
+        // Envoi de l'image si elle existe
         const imagePath = path.join(__dirname, '../assets/bot_image.jpg');
         if (fs.existsSync(imagePath)) {
             const imageBuffer = fs.readFileSync(imagePath);
+
             await sock.sendMessage(
                 chatId,
                 {
                     image: imageBuffer,
-                    caption: menuMessage,
+                    caption: helpMessage,
                     contextInfo: {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: "120363425443983039@newsletter",
-                            newsletterName: "🐾CHAT NOIR-MD🐾",
+                            newsletterJid: "120363402057857053@newsletter",
+                            newsletterName: "🌹AKATSUKI–MD•V3🌹",
                             serverMessageId: -1
                         }
                     }
                 },
                 { quoted: message }
             );
+
         } else {
             await sock.sendMessage(chatId, {
-                text: menuMessage,
+                text: helpMessage,
                 contextInfo: {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: "120363425443983039@newsletter",
-                        newsletterName: "🐾CHAT NOIR-MD🐾",
+                        newsletterJid: "120363402057857053@newsletter",
+                        newsletterName: "🌹AKATSUKI–MD•V3🌹",
                         serverMessageId: -1
                     }
                 }
             });
         }
 
+        // AUDIO DU MENU
         const audioPath = path.join(__dirname, '../assets/menu_audio.mp3');
         if (fs.existsSync(audioPath)) {
             const audioBuffer = fs.readFileSync(audioPath);
+
             await sock.sendMessage(
                 chatId,
-                { audio: audioBuffer, mimetype: 'audio/mpeg', ptt: false },
+                {
+                    audio: audioBuffer,
+                    mimetype: 'audio/mpeg',
+                    ptt: false   // 🔥 ENFIN : MUSIQUE NORMALE (barre audio)
+                },
                 { quoted: message }
             );
         }
 
     } catch (error) {
         console.error("Erreur MENU:", error);
-        await sock.sendMessage(chatId, { text: menuMessage });
+        await sock.sendMessage(chatId, { text: helpMessage });
     }
 }
 
